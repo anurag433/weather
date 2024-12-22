@@ -6,7 +6,17 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>ANurag Singh</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, rerum ex doloremque qui atque unde placeat laboriosam beatae quae ut.</p>
+    <form method="POST">
+        {%csrf_token %}
+        <input type="text" name="city" placeholder="Enter your city ">
+        <button type="submit">Search</button>
+    </form>
+    <h2>{{temp}}</h2>
+    <h3>{{city}}</h3>
+    <p>{{ description }}</p>
+    <p>
+        <img src="https://openweathermap.org/img/w/{{ icon }}.png" width="100px">
+    </p>
+    <p>{{ day }}</p>
 </body>
 </html>
