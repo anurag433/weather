@@ -1,7 +1,13 @@
 from django.shortcuts import render , HttpResponse
+import environ
 
 import requests
 import datetime
+env = environ.Env()
+environ.Env.read_env()
+WEATHER_API_KEY = env("WEATHER_API_KEY")
+
+print(env("WEATHER_API_KEY"))
 
 def home(request):
 
@@ -16,7 +22,7 @@ def home(request):
          zip_code = '231306'    
     
 #     url  = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid=ee91c2932fa3e6b8a44818fb810ed332'
-     url = f'https://api.openweathermap.org/data/2.5/weather?zip={zip_code},IN&appid=ee91c2932fa3e6b8a44818fb810ed332'
+     url = f'https://api.openweathermap.org/data/2.5/weather?zip={zip_code},IN&appid={WEATHER_API_KEY}'
       
 
      params = {'units':'metric'}
