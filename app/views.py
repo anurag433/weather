@@ -42,5 +42,5 @@ def home(request):
      
      else:
          
-         return render(request,"index.html",{'message':'enter city or pincode','success':1})
+         return render(request,"index.html",{'message':'enter city or pincode','success':0})
          
