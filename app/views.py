@@ -10,8 +10,8 @@ WEATHER_API_KEY = env("WEATHER_API_KEY")
 
 
 def home(request):
-         # Safely get the values using `get()` to avoid KeyError
-     city = request.POST.get("city", "").strip()  # Default to an empty string if not provided
+        
+     city = request.POST.get("city", "").strip()  
      zip_code = request.POST.get("zip_code", "").strip()
 
      if len(city) >0 or len(zip_code)==6:
@@ -37,10 +37,10 @@ def home(request):
 
            return render (request ,'index.html',{'description':description,'icon':icon,'temp':temp,'day':day,'zip_code':zip_code, 'pressure':pressure,'humidity':humidity,'name':name,'speed':speed , 'success': 1})
         else :
-            return render(request,"index.html",{'message':'enter the valid city name','success':1})
+            return render(request,"index.html",{'message':'Enter the valid input','success':1})
 
      
      else:
-         
-         return render(request,"index.html",{'message':'enter city or pincode','success':0})
+         print("data true")
+         return render(request,"index.html",{'message':'Enter City or Pincode','success':1})
          
