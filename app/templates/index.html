@@ -1,78 +1,117 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather</title>
+    <title>Weather App</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        function toggleInput(selected) {
+            const cityContainer = document.querySelector('.input-container.city');
+            const zipContainer = document.querySelector('.input-container.zip');
+            const cityInput = document.getElementById('city');
+            const zipInput = document.getElementById('zip_code');
+
+            if (selected === 'city') {
+                cityContainer.classList.add('active');
+                zipContainer.classList.remove('active');
+                cityInput.disabled = false;
+                zipInput.disabled = true;
+                zipInput.value = '';
+            } else {
+                zipContainer.classList.add('active');
+                cityContainer.classList.remove('active');
+                zipInput.disabled = false;
+                cityInput.disabled = true;
+                cityInput.value = '';
+            }
+        }
+    </script>
 </head>
 <body>
-    <!-- all content will be in one box -->
     <div class="main">
-        <div class="container">
-            <h1>Weather</h2>
-        </div>
-        <form method="POST">
-            {%csrf_token %}
-            <input type="text" name="zip_code" placeholder="Enter your Pin code  ">
-            <button type="submit">Search</button>
-        </form>
-    
-        <div class="weather">
-            <div class="left">
-                <h2>{{temp}} °C</h2>
-                <h3>{{city}}</h3>
+        <div class="glass-card">
+            <div class="container">
+                <h1>Weather Forecast</h1>
             </div>
-            <div class="right">
-                <div class="icon">
-                    <p>
-                        <img src="https://openweathermap.org/img/w/{{ icon }}.png" width="100px">
-                    </p>
+            
+            <form method="POST" class="search-form">
+                {% csrf_token %}
+                <div class="toggle-container">
+                    <label class="toggle-btn">
+                        <input type="radio" name="search_by" value="city" onclick="toggleInput('city')" checked>
+                        <span class="toggle-text">Search by City</span>
+                    </label>
+                    <label class="toggle-btn">
+                        <input type="radio" name="search_by" value="zip" onclick="toggleInput('zip')">
+                        <span class="toggle-text">Search by ZIP</span>
+                    </label>
                 </div>
-                <div class="condition">
-                    <p>{{ description }}</p>
-                    <p>{{ day }}</p>
-                    <p> Pressure : {{ pressure }} Pa</p>
-                    <p> Humidity : {{ humidity }} </p>
+                
+                <div class="inputs-wrapper">
+                    <div class="input-container city active">
+                        <input type="text" id="city" name="city" placeholder="Enter city name...">
+                    </div>
+                    <div class="input-container zip">
+                        <input type="text" id="zip_code" name="zip_code" placeholder="Enter ZIP code..." disabled>
+                    </div>
                 </div>
+                
+                <button type="submit" class="search-btn">
+                    <span>Search Weather</span>
+                </button>
+            </form>
+            
+            {% if  success %}
+        
+            <div class="weather" data-weather="{{ description|lower }}">
+                {% if message %}
+                <div class="error-message">{{ message }}</div>
+                
+                {%else%}
+                
+                <div class="weather-content">
+                    <div class="left">
+                        <div class="temp-display">
+                            <h2>{{ temp }}°<span class="unit">C</span></h2>
+                            <h3>{{ city }}</h3>
+                            <h3>{{ name }}</h3>
+                            
+                            
+                        </div>
+                        <div class="weather-details">
+                            <p class="date">{{ day }}</p>
+                            <p class="description">{{ description }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="right">
+                        <div class="weather-icon">
+                            <img src="https://openweathermap.org/img/w/{{ icon }}.png" alt="{{ description }}">
+                        </div>
+                        <div class="metrics">
+                            <div class="metric-item">
+                                <span class="label">Pressure</span>
+                                <span class="value">{{ pressure }} Pa</span>
+                                
+                            </div>
+                            <div class="metric-item">
+                                <span class="label">Humidity</span>
+                                <span class="value">{{ humidity }}%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="label">Speed</span>
+                                <span class="value">{{ speed }} km/hr</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
+            {% endif %}
         </div>
     </div>
-
-    <!-- this is the main  -->
-    <!-- <div class="container">
-        <h1>Weather</h2>
-    </div>
-    <form method="POST">
-        {%csrf_token %}
-        <input type="text" name="city" placeholder="Enter your city ">
-        <button type="submit">Search</button>
-    </form>
-
-    <div class="weather">
-        <div class="left">
-            <h2>{{temp}}</h2>
-            <h3>{{city}}</h3>
-        </div>
-        <div class="right">
-            <div class="icon">
-                <p>
-                    <img src="https://openweathermap.org/img/w/{{ icon }}.png" width="100px">
-                </p>
-            </div>
-            <div class="condition">
-                <p>{{ description }}</p>
-                <p>{{ day }}</p>
-            </div>
-        </div>
-    </div>
-    
-    
-     -->
-    
-
-   
 </body>
 </html>
